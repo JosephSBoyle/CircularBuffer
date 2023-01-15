@@ -1,10 +1,36 @@
-/* A circular char buffer implementation. */
+/* A circular char buffer implementation. 
+
+  Copyright (c) [2023] [Joseph S. Boyle]
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+*/
 #include <stddef.h>
 #include <stdlib.h>
-#include <stdio.h> // TODO delete me when no longer using printf.
+#include <stdio.h>  // only necessary if running the example in `main`.
 
 
-/* A fixed-size buffer of characters.*/
+/* A fixed-size character buffer.
+ *
+ * Contains member variables representing the
+ * read / write positions and the length of the
+ * buffer. Intended for use as a circular buffer.
+ */
 typedef struct CharacterBuffer {
     char*  buffer;
     size_t head;
@@ -61,6 +87,7 @@ void cbuf_print(CharacterBuffer* cbuf) {
 }
 
 int main(void) {
+    // basic usage example.
     int length = 4;
     
     CharacterBuffer* cbuf = cbuf_create(length);
@@ -70,6 +97,6 @@ int main(void) {
     cbuf_put(cbuf, '9');
     cbuf_put(cbuf, '9');
 
+    // prints: '9799'
     cbuf_print(cbuf);
-    return 0;
 }
