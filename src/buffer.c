@@ -33,44 +33,43 @@ CharacterBuffer* cbuf_create(size_t length) {
     return char_buffer;
 } 
 
-static size_t start = 0;
-static size_t end   = 0;
-static int    size  = 3;
-
-
 /* Put a character onto the buffer. */
-void cbuf_put(CharacterBuffer* ccbuf, char c) {
-    ccbuf->buffer[end] = c;
-    end++;
-    end %= size;
+void cbuf_put(CharacterBuffer* cbuf, char c) {
+    cbuf->buffer[cbuf->tail] = c;
+    cbuf->tail++;
+    cbuf->tail %= cbuf->length;
+    // printf("tail:%lu\n",ccbuf->tail );
     return;
 }
 
 /* Get a character from the circular char buffer.*/
-char cbuf_get(CharacterBuffer* ccbuf) {
-    char c = ccbuf->buffer[start];
-    ccbuf->buffer[start] = '\0';
+char cbuf_get(CharacterBuffer* cbuf) {
+    // Read and reset the value.
+    char c = cbuf->buffer[cbuf->head];
+    cbuf->buffer[cbuf->head] = '\0';
     
-    start++;
-    start %= size;
+    cbuf->head++;
+    cbuf->head %= cbuf->length;
     return c;
 }
 
 /* Print a circular char buffer to stdout. */
-void cbuf_print(CharacterBuffer* ccbuf, size_t size) {
-    for (size_t i = 0; i < size; i++)
-        { printf("%c", cbuf_get(ccbuf));}
+void cbuf_print(CharacterBuffer* cbuf) {
+    for (size_t i = 0; i < cbuf->length; i++)
+        printf("%c", cbuf_get(cbuf));
     printf("\n");
 }
 
 int main(void) {
-    CharacterBuffer* ccbuf = cbuf_create(size);
-    cbuf_put(ccbuf, '7');
-    cbuf_put(ccbuf, '7');
-    cbuf_put(ccbuf, '9');
-    cbuf_put(ccbuf, '9');
-    cbuf_put(ccbuf, '9');
+    int length = 4;
+    
+    CharacterBuffer* cbuf = cbuf_create(length);
+    cbuf_put(cbuf, '7');
+    cbuf_put(cbuf, '7');
+    cbuf_put(cbuf, '9');
+    cbuf_put(cbuf, '9');
+    cbuf_put(cbuf, '9');
 
-    cbuf_print(ccbuf, size);
+    cbuf_print(cbuf);
     return 0;
 }
